@@ -45,16 +45,28 @@ export interface Transaction {
 
 export type TransactionInput = Omit<Transaction, "id" | "createdAt" | "updatedAt">;
 
-export interface Commitment {
-  id: string; name: string; category: string; amount: Money; dueDate: string;
-  cadence: "once" | "monthly" | "quarterly" | "yearly";
-  status: "scheduled" | "expected" | "paid"; essential: boolean;
-}
+export type RecurrenceUnit = string;
+export interface Recurrence { interval: number; unit: RecurrenceUnit }
+export const RECURRENCE_PRESETS = ["weekly", "monthly", "quarterly", "yearly", "custom"] as const;
+export type RecurringStatus = "active" | "paused" | "cancelled";
 
 export interface Subscription {
-  id: string; name: string; amount: Money; nextPaymentDate: string;
-  cadence: "monthly" | "quarterly" | "yearly"; essential: boolean; active: boolean;
+  id: string; name: string; amount: Money; recurrence: Recurrence; nextDate: string;
+  accountId: string; category: string; status: RecurringStatus; startDate: string | null;
+  endDate: string | null; notes: string | null; essential: boolean;
+  createdAt: string; updatedAt: string;
 }
+export type SubscriptionInput = Omit<Subscription, "id" | "createdAt" | "updatedAt">;
+
+export type CommitmentKind = string;
+export interface Commitment {
+  id: string; name: string; amount: Money; recurrence: Recurrence; nextDate: string;
+  accountId: string; destinationAccountId: string | null; liabilityAccountId: string | null;
+  category: string; status: RecurringStatus; kind: CommitmentKind; essential: boolean;
+  startDate: string | null; endDate: string | null; notes: string | null;
+  createdAt: string; updatedAt: string;
+}
+export type CommitmentInput = Omit<Commitment, "id" | "createdAt" | "updatedAt">;
 
 export interface ForecastPoint { date: string; balance: Money; label?: string }
 export interface Opportunity { id: string; title: string; description: string; annualImpact: Money; confidence: "high" | "medium" | "low"; category: "subscription" | "cash" | "fees" | "rate" }

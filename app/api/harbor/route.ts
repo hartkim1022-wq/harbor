@@ -3,6 +3,7 @@ import { getDb } from "@/db";
 import { harborState } from "@/db/schema";
 import { initialData } from "@/data/mock";
 import type { HarborData } from "@/lib/types";
+import { normalizeHarborData } from "@/lib/normalize";
 
 const STATE_ID = "personal-workspace";
 
@@ -10,7 +11,7 @@ export async function GET() {
   try {
     const db = getDb();
     const [row] = await db.select().from(harborState).where(eq(harborState.id, STATE_ID)).limit(1);
-    if (row) return Response.json(JSON.parse(row.payload) as HarborData);
+    if (row) return Response.json(normalizeHarborData(JSON.parse(row.payload) as HarborData));
     await db.insert(harborState).values({ id: STATE_ID, payload: JSON.stringify(initialData), updatedAt: new Date().toISOString() });
     return Response.json(initialData);
   } catch {
@@ -20,7 +21,7 @@ export async function GET() {
 
 export async function PUT(request: Request) {
   try {
-    const data = (await request.json()) as HarborData;
+    const data = normalizeHarborData((await request.json()) as HarborData);
     if (!Array.isArray(data.accounts) || !Array.isArray(data.transactions)) return Response.json({ error: "Invalid Harbor data" }, { status: 400 });
     const db = getDb();
     const updatedAt = new Date().toISOString();

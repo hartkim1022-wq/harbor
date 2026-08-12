@@ -1,4 +1,5 @@
-import type { Account, Commitment, CurrencyCode, ExchangeRateSnapshot, HarborData, Subscription, Transaction } from "./types";
+import { monthlyEquivalentMinor, occurrencesBetween } from "./recurrence";
+import type { Account, CurrencyCode, ExchangeRateSnapshot, HarborData, Transaction } from "./types";
 
 export interface FinanceMetrics {
   reportingCurrency: CurrencyCode;
@@ -57,27 +58,19 @@ export function calculateTransactionMetrics(transactions: Transaction[], rates: 
   return { monthlyIncomeMinor, monthlySpendingMinor, fixedSpendingMinor, flexibleSpendingMinor, essentialTransactionSpendMinor };
 }
 
-function monthlyEquivalent(amountMinor: number, cadence: Commitment["cadence"] | Subscription["cadence"]) {
-  if (cadence === "yearly") return Math.round(amountMinor / 12);
-  if (cadence === "quarterly") return Math.round(amountMinor / 3);
-  return amountMinor;
-}
-
-export function calculateCommittedCash(commitments: Commitment[], subscriptions: Subscription[], rates: ExchangeRateSnapshot, fromDate: string, horizonDays = 30) {
-  const start = new Date(`${fromDate}T00:00:00Z`).getTime();
-  const end = start + horizonDays * 86_400_000;
-  const due = (date: string) => { const time = new Date(`${date}T00:00:00Z`).getTime(); return time >= start && time <= end; };
-  const commitmentTotal = commitments.filter((item) => item.status !== "paid" && due(item.dueDate)).reduce((sum, item) => sum + convertMinor(item.amount.amountMinor, item.amount.currency, rates), 0);
-  const subscriptionTotal = subscriptions.filter((item) => item.active && due(item.nextPaymentDate)).reduce((sum, item) => sum + convertMinor(item.amount.amountMinor, item.amount.currency, rates), 0);
+export function calculateCommittedCash(data: HarborData, fromDate: string, horizonDays = 30) {
+  const end = new Date(`${fromDate}T00:00:00Z`); end.setUTCDate(end.getUTCDate()+horizonDays); const toDate=end.toISOString().slice(0,10);
+  const commitmentTotal = data.commitments.filter(i=>i.status==="active"&&i.kind!=="income"&&i.kind!=="transfer").reduce((sum,item)=>sum+occurrencesBetween(item.nextDate,item.recurrence,fromDate,toDate,item.endDate).length*convertMinor(item.amount.amountMinor,item.amount.currency,data.rates),0);
+  const subscriptionTotal = data.subscriptions.filter(i=>i.status==="active").reduce((sum,item)=>sum+occurrencesBetween(item.nextDate,item.recurrence,fromDate,toDate,item.endDate).length*convertMinor(item.amount.amountMinor,item.amount.currency,data.rates),0);
   return commitmentTotal + subscriptionTotal;
 }
 
 export function calculateFinanceMetrics(data: HarborData, month: string, asOfDate: string): FinanceMetrics {
   const accounts = calculateAccountMetrics(data.accounts, data.rates);
   const transactions = calculateTransactionMetrics(data.transactions, data.rates, month);
-  const committedCashMinor = calculateCommittedCash(data.commitments, data.subscriptions, data.rates, asOfDate);
-  const essentialCommitments = data.commitments.filter((item) => item.essential && item.status !== "paid").reduce((sum, item) => sum + monthlyEquivalent(convertMinor(item.amount.amountMinor, item.amount.currency, data.rates), item.cadence), 0);
-  const essentialSubscriptions = data.subscriptions.filter((item) => item.essential && item.active).reduce((sum, item) => sum + monthlyEquivalent(convertMinor(item.amount.amountMinor, item.amount.currency, data.rates), item.cadence), 0);
+  const committedCashMinor = calculateCommittedCash(data, asOfDate);
+  const essentialCommitments = data.commitments.filter((item) => item.essential && item.status === "active" && item.kind!=="income"&&item.kind!=="transfer").reduce((sum, item) => sum + monthlyEquivalentMinor(convertMinor(item.amount.amountMinor, item.amount.currency, data.rates), item.recurrence), 0);
+  const essentialSubscriptions = data.subscriptions.filter((item) => item.essential && item.status === "active").reduce((sum, item) => sum + monthlyEquivalentMinor(convertMinor(item.amount.amountMinor, item.amount.currency, data.rates), item.recurrence), 0);
   const essentialMonthlyBurnMinor = transactions.essentialTransactionSpendMinor + essentialCommitments + essentialSubscriptions;
   return {
     reportingCurrency: data.rates.baseCurrency, ...accounts, ...transactions, committedCashMinor,

@@ -2,7 +2,7 @@
 
 ## Product shape
 
-Harbor is a forward-looking personal financial operating system. Phase 2 establishes the first working loop: maintain accounts and transactions, then see position, cash availability, spending, commitments, and runway update from those records. It deliberately avoids budget gamification and bank integrations.
+Harbor is a forward-looking personal financial operating system. Phase 3 adds recurring subscriptions, recurring commitments, and deterministic forward cash-flow forecasts to the working account and transaction model. It deliberately avoids budget gamification and bank integrations.
 
 ## Project structure
 
@@ -10,7 +10,7 @@ Harbor is a forward-looking personal financial operating system. Phase 2 establi
 - `components/finance-workspace.tsx`: client workspace orchestration and navigation.
 - `components/accounts/`, `components/transactions/`, `components/dashboard/`: domain views.
 - `components/ui/`: small shadcn/ui-style primitives owned by Harbor.
-- `lib/types.ts`: shared domain contracts; `lib/finance.ts`: pure financial selectors; `lib/repository.ts`: data-access contract and HTTP implementation.
+- `lib/types.ts`: shared domain contracts; `lib/recurrence.ts`: calendar recurrence; `lib/forecast.ts`: deterministic future event projection; `lib/finance.ts`: position selectors; `lib/repository.ts`: data access.
 - `data/`: initial fixture used to seed a new personal workspace and as a local development fallback.
 - `db/`: persistence schema; `drizzle/`: checked-in migrations.
 
@@ -24,7 +24,17 @@ API failures never pretend a write succeeded. The read endpoint may use the fixt
 
 Money uses integer minor units plus a currency code. Accounts contain a native currency and balance; credit cards may include a credit limit. Transactions support income, expense, and internal transfer, with optional fixed/flexible and essential classifications for expenses. Transfers hold both source and destination Harbor account IDs.
 
+Subscriptions and commitments remain separate domain records but share the same `{ interval, unit }` recurrence contract. The recurrence engine performs calendar-safe month/year additions, clamping invalid dates to the last day of the target month. Paused and cancelled records remain historical but emit no forecast events. Commitments distinguish expense, income, internal transfer, and debt repayment; repayments may reference the liability they reduce.
+
 Cross-currency totals use an explicit dated `ExchangeRateSnapshot` and preserve native record values. GBP is the current reporting currency; GBP, CNY, USD, and EUR are presented initially while codes remain extensible.
+
+## Forecast definitions
+
+Forecasts start from positive liquid account balances and produce event-based series for 30, 60, or 90 days. They apply active recurring records and future-dated manual transactions. Internal transfers between liquid Harbor accounts have zero net-cash impact. Debt repayments reduce liquid cash and record an equal positive liability impact when a liability account is referenced. No probabilistic assumptions or inferred income are added.
+
+Recurring monthly and annualised costs use a 365.2425-day calendar-year equivalent. Cancelled/paused records and recurring income/transfers are excluded from recurring burn. Lowest balance includes the starting position and every event date.
+
+FX is intentionally static in Phase 3. Every conversion uses the dated rate snapshot stored with the workspace; missing rates throw rather than silently adding unlike currencies. Live rates remain out of scope.
 
 ## Financial definitions
 

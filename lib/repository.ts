@@ -1,4 +1,4 @@
-import type { Account, AccountInput, HarborData, Transaction, TransactionInput } from "./types";
+import type { Account, AccountInput, Commitment, CommitmentInput, HarborData, Subscription, SubscriptionInput, Transaction, TransactionInput } from "./types";
 
 export interface HarborRepository {
   load(): Promise<HarborData>;
@@ -8,6 +8,8 @@ export interface HarborRepository {
   createTransaction(input: TransactionInput): Promise<HarborData>;
   updateTransaction(id: string, input: TransactionInput): Promise<HarborData>;
   deleteTransaction(id: string): Promise<HarborData>;
+  createSubscription(input: SubscriptionInput): Promise<HarborData>; updateSubscription(id:string,input:SubscriptionInput):Promise<HarborData>; deleteSubscription(id:string):Promise<HarborData>;
+  createCommitment(input: CommitmentInput): Promise<HarborData>; updateCommitment(id:string,input:CommitmentInput):Promise<HarborData>; deleteCommitment(id:string):Promise<HarborData>;
 }
 
 export class HttpHarborRepository implements HarborRepository {
@@ -46,4 +48,10 @@ export class HttpHarborRepository implements HarborRepository {
     return this.persist({ ...this.current(), transactions: this.current().transactions.map((item) => item.id === id ? { ...item, ...input, updatedAt: new Date().toISOString() } : item) });
   }
   async deleteTransaction(id: string) { return this.persist({ ...this.current(), transactions: this.current().transactions.filter((item) => item.id !== id) }); }
+  async createSubscription(input:SubscriptionInput){const stamp=new Date().toISOString();const item:Subscription={...input,id:crypto.randomUUID(),createdAt:stamp,updatedAt:stamp};return this.persist({...this.current(),subscriptions:[...this.current().subscriptions,item]});}
+  async updateSubscription(id:string,input:SubscriptionInput){return this.persist({...this.current(),subscriptions:this.current().subscriptions.map(i=>i.id===id?{...i,...input,updatedAt:new Date().toISOString()}:i)});}
+  async deleteSubscription(id:string){return this.persist({...this.current(),subscriptions:this.current().subscriptions.filter(i=>i.id!==id)});}
+  async createCommitment(input:CommitmentInput){const stamp=new Date().toISOString();const item:Commitment={...input,id:crypto.randomUUID(),createdAt:stamp,updatedAt:stamp};return this.persist({...this.current(),commitments:[...this.current().commitments,item]});}
+  async updateCommitment(id:string,input:CommitmentInput){return this.persist({...this.current(),commitments:this.current().commitments.map(i=>i.id===id?{...i,...input,updatedAt:new Date().toISOString()}:i)});}
+  async deleteCommitment(id:string){return this.persist({...this.current(),commitments:this.current().commitments.filter(i=>i.id!==id)});}
 }

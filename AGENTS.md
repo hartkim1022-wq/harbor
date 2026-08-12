@@ -13,6 +13,8 @@ The visual character is restrained, premium, and information-dense without feeli
 - Store money as integer minor units with an ISO-style currency code. Never use a bare number for a monetary value.
 - Cross-currency aggregation requires an explicit dated rate snapshot. Preserve native amounts and the reporting-currency result.
 - Treat commitments, subscriptions, and transactions as related but distinct concepts. A subscription may generate commitments; a settled commitment may link to a transaction.
+- Subscriptions and commitments must use `lib/recurrence.ts`; never implement recurrence arithmetic in a component.
+- Forecast changes belong in `lib/forecast.ts` and must remain deterministic. Do not infer income or silently convert currencies without the workspace rate snapshot.
 - Access financial records through the `HarborRepository` contract. The Phase 2 implementation persists a single personal-workspace aggregate in D1; do not couple views to D1 or Drizzle.
 - The read API may fall back to fixtures for local development when D1 is unavailable. Writes must never report success unless persistence succeeds.
 
@@ -33,3 +35,4 @@ The visual character is restrained, premium, and information-dense without feeli
 - Before handoff, run lint, `tsc --noEmit`, and the production build. Fix errors rather than suppressing rules without a documented reason.
 - Keep product copy and mock figures internally consistent across cards, charts, and lists.
 - Internal Harbor transfers must never count as income or spending. Preserve source and destination account IDs.
+- Paused and cancelled recurring records remain visible but must not emit future forecast events.
