@@ -1,4 +1,8 @@
-// Intentionally empty by default.
-// Add Drizzle tables here when the site actually needs a database.
-// See examples/d1/db/schema.ts for an opt-in example.
-export {};
+import { sqliteTable, text } from "drizzle-orm/sqlite-core";
+
+/** Phase 2 stores the aggregate behind a repository boundary for a simple, atomic local workflow. */
+export const harborState = sqliteTable("harbor_state", {
+  id: text("id").primaryKey(),
+  payload: text("payload").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
