@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f5f5f3;
+  --foreground: #171a18;
+  --card: #ffffff;
+  --muted: #727873;
+  --line: #e7e8e4;
+  --accent: #103e32;
+  --accent-soft: #e9f0ec;
+  --positive: #176b4d;
+  --warning: #a16622;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* { box-sizing: border-box; }
+html { background: var(--background); }
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+button, a { font: inherit; }
+button { color: inherit; }
+::selection { background: #cfe0d8; }
+
+.scrollbar-none { scrollbar-width: none; }
+.scrollbar-none::-webkit-scrollbar { display: none; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-rise { animation: rise .45s ease-out both; }
+@media (prefers-reduced-motion: reduce) { .animate-rise { animation: none; } }
