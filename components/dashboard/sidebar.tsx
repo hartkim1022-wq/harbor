@@ -1,10 +1,10 @@
 "use client";
 
-export type Section = "dashboard" | "accounts" | "transactions" | "subscriptions" | "commitments" | "forecast" | "insights" | "settings";
+export type Section = "dashboard" | "accounts" | "transactions" | "subscriptions" | "commitments" | "forecast" | "beacon" | "settings";
 const primary: { label: string; id: Section; mark: string }[] = [
   { label: "Dashboard", id: "dashboard", mark: "⌂" }, { label: "Accounts", id: "accounts", mark: "▣" },
   { label: "Transactions", id: "transactions", mark: "↔" }, { label: "Subscriptions", id: "subscriptions", mark: "◫" },
-  { label: "Commitments", id: "commitments", mark: "◷" }, { label: "Forecast", id: "forecast", mark: "⌁" }, { label: "Insights", id: "insights", mark: "✦" },
+  { label: "Commitments", id: "commitments", mark: "◷" }, { label: "Forecast", id: "forecast", mark: "⌁" }, { label: "Beacon", id: "beacon", mark: "✦" },
 ];
 
 export function Sidebar({ active, onNavigate }: { active: Section; onNavigate: (section: Section) => void }) {

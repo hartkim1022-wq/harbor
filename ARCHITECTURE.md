@@ -2,7 +2,7 @@
 
 ## Product shape
 
-Harbor is a forward-looking personal financial operating system. Phase 3 adds recurring subscriptions, recurring commitments, and deterministic forward cash-flow forecasts to the working account and transaction model. It deliberately avoids budget gamification and bank integrations.
+Harbor is a forward-looking personal financial operating system. Phase 4 adds Beacon, a deterministic financial intelligence pipeline operating over the Phase 1–3 position, transaction, recurrence, and forecast engines. It deliberately avoids budget gamification, conversational AI, and bank integrations.
 
 ## Project structure
 
@@ -11,6 +11,7 @@ Harbor is a forward-looking personal financial operating system. Phase 3 adds re
 - `components/accounts/`, `components/transactions/`, `components/dashboard/`: domain views.
 - `components/ui/`: small shadcn/ui-style primitives owned by Harbor.
 - `lib/types.ts`: shared domain contracts; `lib/recurrence.ts`: calendar recurrence; `lib/forecast.ts`: deterministic future event projection; `lib/finance.ts`: position selectors; `lib/repository.ts`: data access.
+- `lib/beacon/`: UI-independent intelligence pipeline, registered analyzers, scoring, historical analytics, recommendations, and timeline generation.
 - `data/`: initial fixture used to seed a new personal workspace and as a local development fallback.
 - `db/`: persistence schema; `drizzle/`: checked-in migrations.
 
@@ -50,3 +51,13 @@ FX is intentionally static in Phase 3. Every conversion uses the dated rate snap
 - Financial runway = liquid cash ÷ essential monthly burn. It is undefined, not infinite, when burn is zero.
 
 All definitions live in `lib/finance.ts` and require tests when changed.
+
+## Beacon architecture
+
+`BeaconPipeline` creates one immutable analysis context, executes registered `BeaconAnalyzer` plugins, merges their structured findings/risks/recommendations, calculates the health score, and builds the timeline. New analyzers register through the pipeline without editing existing analyzers. Components consume `BeaconReport`; analyzers never render UI.
+
+The Financial Health Score is a bounded weighted mean: liquidity 15%, runway 20%, cash-flow stability 15%, debt load 15%, subscription efficiency 10%, spending stability 10%, and commitment risk 15%. Each dimension exposes its own formula description and confidence. Weights favour solvency and forward resilience over discretionary optimisation.
+
+Recommendations must name potential annual and monthly value, lifestyle impact, confidence, calculations, records analyzed, and reasoning. Essential recurring records are excluded from reduction recommendations. Savings are maximum modeled potential, never a guarantee.
+
+Historical analytics use recorded transactions over 30/90/180/365-day windows. Commitment and subscription trends use recorded start/end dates. Runway and net-worth movements are explicitly labeled transaction-backcast estimates until Harbor stores periodic snapshots; Beacon never presents them as observed balances.

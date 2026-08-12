@@ -15,6 +15,8 @@ The visual character is restrained, premium, and information-dense without feeli
 - Treat commitments, subscriptions, and transactions as related but distinct concepts. A subscription may generate commitments; a settled commitment may link to a transaction.
 - Subscriptions and commitments must use `lib/recurrence.ts`; never implement recurrence arithmetic in a component.
 - Forecast changes belong in `lib/forecast.ts` and must remain deterministic. Do not infer income or silently convert currencies without the workspace rate snapshot.
+- Beacon analyzers live under `lib/beacon/`, return structured results, and register through `BeaconPipeline`. Never render UI or read component state inside an analyzer.
+- Beacon recommendations must be derived from named Harbor records, exclude essential reductions, and include calculations, data analyzed, confidence, lifestyle impact, and modeled savings.
 - Access financial records through the `HarborRepository` contract. The Phase 2 implementation persists a single personal-workspace aggregate in D1; do not couple views to D1 or Drizzle.
 - The read API may fall back to fixtures for local development when D1 is unavailable. Writes must never report success unless persistence succeeds.
 
@@ -36,3 +38,4 @@ The visual character is restrained, premium, and information-dense without feeli
 - Keep product copy and mock figures internally consistent across cards, charts, and lists.
 - Internal Harbor transfers must never count as income or spending. Preserve source and destination account IDs.
 - Paused and cancelled recurring records remain visible but must not emit future forecast events.
+- Never describe Beacon as AI or a chatbot. It is a deterministic, explainable analysis engine.
