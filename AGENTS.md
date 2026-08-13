@@ -25,6 +25,7 @@ The visual character is restrained, premium, and information-dense without feeli
 - TypeScript strict mode is required. Prefer explicit domain types and small pure formatting/selector functions.
 - Use server components by default; add client components only for real interaction.
 - Use Tailwind utilities and CSS variables for shared design tokens. Extend the shadcn/ui-style primitives in `components/ui/` rather than duplicating controls.
+- Treat `DESIGN_SYSTEM.md` as authoritative for visual work. Use semantic Harbor tokens; do not introduce raw one-off colours when an existing role applies.
 - Preserve keyboard focus, semantic HTML, accessible names, reduced-motion behaviour, responsive layouts, and useful empty/loading/error states.
 - Keep files focused. Avoid premature abstractions, opaque generic helpers, and dependencies that duplicate a small existing utility.
 - Use `Intl.NumberFormat` for currency and locale display. Dates must be timezone-aware once they leave fixtures.
@@ -39,3 +40,4 @@ The visual character is restrained, premium, and information-dense without feeli
 - Internal Harbor transfers must never count as income or spending. Preserve source and destination account IDs.
 - Paused and cancelled recurring records remain visible but must not emit future forecast events.
 - Never describe Beacon as AI or a chatbot. It is a deterministic, explainable analysis engine.
+- Never invent a user identity. Profile references must come from the repository-backed `HarborProfile`; use the neutral migration fallback when absent.

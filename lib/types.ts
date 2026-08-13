@@ -78,7 +78,23 @@ export interface ExchangeRateSnapshot {
   rates: Record<string, number>;
 }
 
+export type ThemePreference = "system" | "light" | "dark";
+export interface HarborProfile {
+  id: string;
+  displayName: string;
+  fullName: string | null;
+  avatarDataUrl: string | null;
+  baseCurrency: CurrencyCode;
+  timeZone: string;
+  language: string;
+  theme: ThemePreference;
+  createdAt: string;
+  updatedAt: string;
+}
+export type HarborProfileInput = Pick<HarborProfile, "displayName" | "fullName" | "avatarDataUrl" | "baseCurrency" | "timeZone" | "language" | "theme">;
+
 export interface HarborData {
+  profile: HarborProfile;
   accounts: Account[];
   transactions: Transaction[];
   commitments: Commitment[];

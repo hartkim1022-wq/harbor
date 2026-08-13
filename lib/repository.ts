@@ -1,7 +1,8 @@
-import type { Account, AccountInput, Commitment, CommitmentInput, HarborData, Subscription, SubscriptionInput, Transaction, TransactionInput } from "./types";
+import type { Account, AccountInput, Commitment, CommitmentInput, HarborData, HarborProfileInput, Subscription, SubscriptionInput, Transaction, TransactionInput } from "./types";
 
 export interface HarborRepository {
   load(): Promise<HarborData>;
+  updateProfile(input: HarborProfileInput): Promise<HarborData>;
   createAccount(input: AccountInput): Promise<HarborData>;
   updateAccount(id: string, input: AccountInput): Promise<HarborData>;
   deleteAccount(id: string): Promise<HarborData>;
@@ -27,6 +28,7 @@ export class HttpHarborRepository implements HarborRepository {
     return this.data;
   }
   private current() { if (!this.data) throw new Error("Repository must be loaded first."); return this.data; }
+  async updateProfile(input: HarborProfileInput) { return this.persist({ ...this.current(), profile: { ...this.current().profile, ...input, displayName: input.displayName.trim(), fullName: input.fullName?.trim() || null, updatedAt: new Date().toISOString() } }); }
   async createAccount(input: AccountInput) {
     const now = new Date().toISOString();
     const account: Account = { ...input, id: crypto.randomUUID(), createdAt: now, updatedAt: now };

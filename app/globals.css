@@ -1,16 +1,34 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f5f5f3;
-  --foreground: #171a18;
-  --card: #ffffff;
-  --muted: #727873;
-  --line: #e7e8e4;
-  --accent: #103e32;
-  --accent-soft: #e9f0ec;
-  --positive: #176b4d;
-  --warning: #a16622;
+  color-scheme: light;
+  --snow:#f7f9f8; --frost:#eef3f4; --mist:#dce4e6; --glacier:#b9d3d6;
+  --harbor-blue:#326775; --deep-ocean:#123744; --midnight-ocean:#09242f;
+  --mountain-slate:#5f6f75; --pine:#286451; --amber:#a56f31; --risk:#9a4f4b;
+  --surface-canvas:#f3f6f5; --surface-base:#f7f9f8; --surface-elevated:#fcfdfc;
+  --surface-subtle:#edf2f2; --surface-glacier:#e2edef; --surface-brand:#123744;
+  --text-primary:#102f3a; --text-secondary:#52676e; --text-muted:#7a8b90;
+  --text-accent:#245e6c; --text-on-brand:#f7fbfb; --text-risk:#88433f;
+  --border-subtle:#dce5e5; --border-strong:#c6d3d5; --focus:#39798a;
+  --radius-xs:6px; --radius-sm:10px; --radius-md:16px; --radius-lg:22px;
+  --shadow-soft:0 1px 2px rgba(9,36,47,.04),0 10px 30px rgba(24,62,73,.04);
+  --shadow-brand:0 8px 20px rgba(9,36,47,.18); --motion-fast:140ms; --motion-base:220ms;
+  --background:var(--surface-canvas); --foreground:var(--text-primary); --card:var(--surface-elevated);
+  --muted:var(--text-muted); --line:var(--border-subtle); --accent:var(--deep-ocean);
+  --accent-soft:var(--surface-glacier); --positive:var(--pine); --warning:var(--amber);
 }
+[data-theme="dark"] {
+  color-scheme: dark;
+  --surface-canvas:#081f29; --surface-base:#0b2833; --surface-elevated:#102f3b;
+  --surface-subtle:#163844; --surface-glacier:#193f4b; --surface-brand:#b9d3d6;
+  --text-primary:#edf5f5; --text-secondary:#b5c5c8; --text-muted:#849ba0;
+  --text-accent:#b9d9dc; --text-on-brand:#09242f; --text-risk:#e1aaa5;
+  --border-subtle:#20414b; --border-strong:#31525c; --focus:#8ac0c8;
+  --shadow-soft:0 1px 2px rgba(0,0,0,.18),0 18px 38px rgba(0,0,0,.12);
+  --shadow-brand:0 8px 20px rgba(0,0,0,.24);
+}
+[data-theme="dark"] .bg-white { background-color:var(--surface-elevated); }
+[data-theme="dark"] input,[data-theme="dark"] select,[data-theme="dark"] textarea { background-color:var(--surface-base); color:var(--text-primary); border-color:var(--border-strong); }
 
 @theme inline {
   --color-background: var(--background);
@@ -30,7 +48,19 @@ body {
 }
 button, a { font: inherit; }
 button { color: inherit; }
-::selection { background: #cfe0d8; }
+::selection { background: var(--glacier); color:var(--midnight-ocean); }
+button, input, select, textarea { transition: border-color var(--motion-fast), background-color var(--motion-fast), color var(--motion-fast), box-shadow var(--motion-fast); }
+:focus-visible { outline:2px solid var(--focus); outline-offset:2px; }
+.page-shell { margin-inline:auto; max-width:1380px; padding:2rem 1.25rem 3.5rem; }
+.eyebrow { color:var(--text-accent); font-size:11px; font-weight:600; letter-spacing:.13em; text-transform:uppercase; }
+.page-title { margin-top:.5rem; font-size:30px; font-weight:600; letter-spacing:-.045em; }
+.page-description { margin-top:.25rem; max-width:42rem; color:var(--text-secondary); font-size:13px; }
+.surface { border:1px solid var(--border-subtle); border-radius:var(--radius-lg); background:var(--surface-elevated); box-shadow:var(--shadow-soft); }
+.input { min-height:42px; width:100%; border:1px solid var(--border-strong); border-radius:var(--radius-sm); background:var(--surface-base); padding:.6rem .75rem; color:var(--text-primary); font-size:13px; }
+.button-primary { border-color:var(--surface-brand)!important; background:var(--surface-brand)!important; color:var(--text-on-brand)!important; }
+.button-secondary { display:inline-flex; min-height:36px; align-items:center; border:1px solid var(--border-strong); border-radius:var(--radius-sm); background:var(--surface-base); padding:0 .8rem; font-size:12px; font-weight:500; }
+.financial-value { font-variant-numeric:tabular-nums lining-nums; letter-spacing:-.04em; }
+@media (min-width:768px){.page-shell{padding-inline:2rem}} @media (min-width:1024px){.page-shell{padding-inline:2.5rem}}
 
 .scrollbar-none { scrollbar-width: none; }
 .scrollbar-none::-webkit-scrollbar { display: none; }
@@ -41,3 +71,4 @@ button { color: inherit; }
 }
 .animate-rise { animation: rise .45s ease-out both; }
 @media (prefers-reduced-motion: reduce) { .animate-rise { animation: none; } }
+@media (prefers-reduced-motion: reduce) { *,*::before,*::after { scroll-behavior:auto!important; transition-duration:.01ms!important; animation-duration:.01ms!important; } }

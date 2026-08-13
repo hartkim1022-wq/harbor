@@ -4,7 +4,7 @@ import { calculateFinanceMetrics } from "../lib/finance";
 import type { HarborData } from "../lib/types";
 
 const now="2026-08-12T00:00:00Z";
-function data(overrides:Partial<HarborData>):HarborData{return { accounts:[],transactions:[],commitments:[],subscriptions:[],rates:{baseCurrency:"GBP",capturedAt:now,rates:{GBP:1,USD:.8}},...overrides};}
+function data(overrides:Partial<HarborData>):HarborData{return { accounts:[],transactions:[],commitments:[],subscriptions:[],rates:{baseCurrency:"GBP",capturedAt:now,rates:{GBP:1,USD:.8}},...overrides,profile:overrides.profile??{id:"test",displayName:"Harbor user",fullName:null,avatarDataUrl:null,baseCurrency:"GBP",timeZone:"UTC",language:"en-GB",theme:"system",createdAt:now,updatedAt:now}};}
 const account=(id:string,type:"current"|"credit_card",balanceMinor:number)=>({id,name:id,institution:"Test",type,currency:"GBP" as const,balanceMinor,creditLimitMinor:null,createdAt:now,updatedAt:now});
 const transaction=(id:string,type:"income"|"expense"|"transfer",amountMinor:number)=>({id,date:"2026-08-05",accountId:"cash",destinationAccountId:type==="transfer"?"savings":null,amountMinor,currency:"GBP" as const,merchant:"Test",category:"Test",notes:null,type,spendingNature:type==="expense"?"flexible" as const:null,essential:type==="expense",createdAt:now,updatedAt:now});
 

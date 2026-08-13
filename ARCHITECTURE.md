@@ -2,7 +2,7 @@
 
 ## Product shape
 
-Harbor is a forward-looking personal financial operating system. Phase 4 adds Beacon, a deterministic financial intelligence pipeline operating over the Phase 1–3 position, transaction, recurrence, and forecast engines. It deliberately avoids budget gamification, conversational AI, and bank integrations.
+Harbor is a forward-looking personal financial operating system. RC1 adds a persistent local profile and the Snow × Mountain × Ocean brand foundation without altering the Phase 1–4 financial engines.
 
 ## Project structure
 
@@ -12,12 +12,17 @@ Harbor is a forward-looking personal financial operating system. Phase 4 adds Be
 - `components/ui/`: small shadcn/ui-style primitives owned by Harbor.
 - `lib/types.ts`: shared domain contracts; `lib/recurrence.ts`: calendar recurrence; `lib/forecast.ts`: deterministic future event projection; `lib/finance.ts`: position selectors; `lib/repository.ts`: data access.
 - `lib/beacon/`: UI-independent intelligence pipeline, registered analyzers, scoring, historical analytics, recommendations, and timeline generation.
+- `lib/profile.ts`: identity presentation, avatar validation, local-time greeting, and theme resolution.
 - `data/`: initial fixture used to seed a new personal workspace and as a local development fallback.
 - `db/`: persistence schema; `drizzle/`: checked-in migrations.
 
 ## Persistence and repository boundary
 
 Phase 2 uses a private Cloudflare D1 database. The initial workspace is stored as a single versionable aggregate because Harbor currently has one user, no authentication, and a small local dataset. The UI only talks to `HarborRepository`; it does not import D1, Drizzle, or route-handler details. A later PostgreSQL/Supabase implementation can satisfy the same interface while normalized tables are introduced.
+
+RC1 adds `profile` to that aggregate. `normalizeHarborData` supplies a neutral “Harbor user” profile when reading a pre-RC1 payload, so accounts, transactions, subscriptions, commitments, rates, and Beacon inputs are preserved byte-for-byte. Avatar images are validated client-side and stored as private data URLs behind the repository contract; a future avatar storage adapter can replace this representation without changing presentation components.
+
+Theme preference is `system | light | dark`. The workspace resolves it to a root `data-theme` attribute; semantic CSS tokens in `app/globals.css` provide both Snow light and Deep Ocean dark mappings. `DESIGN_SYSTEM.md` is authoritative for visual work.
 
 API failures never pretend a write succeeded. The read endpoint may use the fixture as a development fallback when a local database binding is unavailable; writes require persistence.
 

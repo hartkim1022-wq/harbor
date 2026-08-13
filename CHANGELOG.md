@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.0 RC1 — Identity & Branding
+
+- Added a persistent, repository-backed local profile with display name, optional full name, private avatar, base currency, time zone, language, and theme preference.
+- Added compatibility normalisation for pre-RC1 workspace aggregates without changing financial records.
+- Added initials avatar fallback, validated local image uploads, and profile-derived dashboard/sidebar identity.
+- Added the geometric Harbor mark and light, dark, and favicon assets.
+- Added semantic Snow, Glacier, Ocean, Mountain Slate, Pine, Amber, and Risk tokens with intentional light and dark mappings.
+- Established typography, surfaces, spacing, radii, shadow, focus, and reduced-motion foundations in `DESIGN_SYSTEM.md`.
+
 ## Phase 4 — Beacon
 
 - Added a plugin-oriented analyzer pipeline independent from presentation code.
