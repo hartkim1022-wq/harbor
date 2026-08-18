@@ -36,7 +36,7 @@ The page container is 1380px. Page spacing is 20/32/40px by breakpoint; sections
 
 ## Icons, avatars, and motion
 
-Icons are simple, geometric, single-colour, and recognisable at small sizes. Avoid illustrative nautical or financial motifs. Avatars are circular, use a private uploaded image when present, and otherwise derive at most two initials from the display name. Empty identity uses “Harbor user”, never an invented person. Motion is 140–220ms, functional, and disabled under reduced-motion preference.
+Icons are simple, geometric, single-colour, and recognisable at small sizes. Avoid illustrative nautical or financial motifs. Avatars are circular, use a private uploaded image when present, and otherwise derive at most two initials from the display name. Empty identity uses “User”, never an invented person. Motion is 140–220ms, functional, and disabled under reduced-motion preference.
 
 ## Accessibility
 

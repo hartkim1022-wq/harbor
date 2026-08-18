@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.0 RC1.1 — Identity acceptance hotfix
+
+- Restored deep-link and reload routing for `#settings`, making Settings → Profile reliably accessible.
+- Added an explicit Profile action in the application header, a clear Save changes action, and an inline success confirmation.
+- Strengthened the rendered Harbor lockup size and acceptance coverage.
+- Changed the empty profile identity to the neutral “User” state.
+
 ## v1.0 RC1 — Identity & Branding
 
 - Added a persistent, repository-backed local profile with display name, optional full name, private avatar, base currency, time zone, language, and theme preference.

@@ -20,7 +20,7 @@ Harbor is a forward-looking personal financial operating system. RC1 adds a pers
 
 Phase 2 uses a private Cloudflare D1 database. The initial workspace is stored as a single versionable aggregate because Harbor currently has one user, no authentication, and a small local dataset. The UI only talks to `HarborRepository`; it does not import D1, Drizzle, or route-handler details. A later PostgreSQL/Supabase implementation can satisfy the same interface while normalized tables are introduced.
 
-RC1 adds `profile` to that aggregate. `normalizeHarborData` supplies a neutral “Harbor user” profile when reading a pre-RC1 payload, so accounts, transactions, subscriptions, commitments, rates, and Beacon inputs are preserved byte-for-byte. Avatar images are validated client-side and stored as private data URLs behind the repository contract; a future avatar storage adapter can replace this representation without changing presentation components.
+RC1 adds `profile` to that aggregate. `normalizeHarborData` supplies a neutral “User” profile when reading a pre-RC1 payload, so accounts, transactions, subscriptions, commitments, rates, and Beacon inputs are preserved byte-for-byte. Avatar images are validated client-side and stored as private data URLs behind the repository contract; a future avatar storage adapter can replace this representation without changing presentation components. RC1.1 restores the active workspace from the URL hash, so `#settings` reliably opens Profile after reload.
 
 Theme preference is `system | light | dark`. The workspace resolves it to a root `data-theme` attribute; semantic CSS tokens in `app/globals.css` provide both Snow light and Deep Ocean dark mappings. `DESIGN_SYSTEM.md` is authoritative for visual work.
 
