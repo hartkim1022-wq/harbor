@@ -26,6 +26,7 @@ The visual character is restrained, premium, and information-dense without feeli
 - Use server components by default; add client components only for real interaction.
 - Use Tailwind utilities and CSS variables for shared design tokens. Extend the shadcn/ui-style primitives in `components/ui/` rather than duplicating controls.
 - Treat `DESIGN_SYSTEM.md` as authoritative for visual work. Use semantic Harbor tokens; do not introduce raw one-off colours when an existing role applies.
+- Use only the finalized two-line assets under `public/branding/`; never reconstruct or reinterpret the Harbor mark in component code.
 - Preserve keyboard focus, semantic HTML, accessible names, reduced-motion behaviour, responsive layouts, and useful empty/loading/error states.
 - Keep files focused. Avoid premature abstractions, opaque generic helpers, and dependencies that duplicate a small existing utility.
 - Use `Intl.NumberFormat` for currency and locale display. Dates must be timezone-aware once they leave fixtures.

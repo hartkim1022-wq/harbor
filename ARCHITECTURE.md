@@ -2,7 +2,7 @@
 
 ## Product shape
 
-Harbor is a forward-looking personal financial operating system. RC1 adds a persistent local profile and the Snow × Mountain × Ocean brand foundation without altering the Phase 1–4 financial engines.
+Harbor is a forward-looking personal financial operating system. RC2 consolidates the product’s visual implementation around the finalized two-line mark, semantic Alpine tokens, shared primitives, and responsive shell without altering the Phase 1–4 financial engines.
 
 ## Project structure
 
@@ -23,6 +23,8 @@ Phase 2 uses a private Cloudflare D1 database. The initial workspace is stored a
 RC1 adds `profile` to that aggregate. `normalizeHarborData` supplies a neutral “User” profile when reading a pre-RC1 payload, so accounts, transactions, subscriptions, commitments, rates, and Beacon inputs are preserved byte-for-byte. Avatar images are validated client-side and stored as private data URLs behind the repository contract; a future avatar storage adapter can replace this representation without changing presentation components. RC1.1 restores the active workspace from the URL hash, so `#settings` reliably opens Profile after reload.
 
 Theme preference is `system | light | dark`. The workspace resolves it to a root `data-theme` attribute; semantic CSS tokens in `app/globals.css` provide both Snow light and Deep Ocean dark mappings. `DESIGN_SYSTEM.md` is authoritative for visual work.
+
+RC2 mirrors the persisted theme preference to device-local storage solely for pre-hydration theme selection; D1 remains authoritative after repository load. Canonical brand assets live under `public/branding/`. Components reference semantic tokens and shared primitives, while Lucide supplies the shell’s consistent outline icon vocabulary.
 
 API failures never pretend a write succeeded. The read endpoint may use the fixture as a development fallback when a local database binding is unavailable; writes require persistence.
 

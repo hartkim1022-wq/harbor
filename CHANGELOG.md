@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.0 RC2 — Visual system refinement
+
+- Adopted the finalized two-line Harbor mark across the shell, favicon, and application icon.
+- Migrated all user-visible components from legacy raw colours to the semantic Alpine token system.
+- Refined Snow and Deep Ocean themes, pre-hydration theme resolution, typography, surfaces, cards, forms, dialogs, and charts.
+- Rebuilt desktop and mobile navigation with a consistent Lucide outline icon system and current-page semantics.
+- Added compact Snow, Deep Ocean, and System appearance previews plus responsive and reduced-motion coverage.
+- Business functionality, financial definitions, persistence, routes, and Beacon analysis are unchanged.
+
 ## v1.0 RC1.1 — Identity acceptance hotfix
 
 - Restored deep-link and reload routing for `#settings`, making Settings → Profile reliably accessible.

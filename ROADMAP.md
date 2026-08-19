@@ -7,10 +7,10 @@
 - Phase 3: recurring records and deterministic 30/60/90-day forecasting.
 - Phase 4: Beacon intelligence pipeline, health scoring, risks, explainable recommendations, timeline, and historical windows.
 - v1.0 RC1: persistent local identity, avatar, Harbor brand mark, semantic visual tokens, and light/dark themes.
+- v1.0 RC2: finalized brand assets and unified Alpine visual system across every existing workspace.
 
 ## Next
 
-- v1.0 RC2: systematic page composition and component migration using the RC1 design foundations.
 
 - Snapshot history for first-class net-worth, commitment, subscription, and runway trends.
 - Scenario planning and user-controlled assumptions, kept separate from deterministic forecasts.
